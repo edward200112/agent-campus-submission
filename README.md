@@ -4,14 +4,16 @@
 
 ## 评审入口
 
+- [从这里阅读 ReAct 过程](examples/react/README.md)：[正常](examples/react/normal.md)、[冲突](examples/react/conflict.md)、[资料不足](examples/react/missing.md)
+- [增强版说明与运行证据](docs/06-react-and-enhancements.md)
 - [需求与成功标准](docs/01-requirements.md)
 - [调用流程、动态决策与技术取舍](docs/02-solution.md)
 - [实际测试与验收证据](docs/03-evaluation.md)
 - [AI 使用说明](docs/04-ai-usage.md)
 - [复盘、用时与限制](docs/05-retrospective.md)
-- [真实 DeepSeek 验收报告](examples/live/report.json)
+- [增强版真实 DeepSeek 验收报告](examples/live-v2/report.json)、[原版报告](examples/live/report.json)
 - [正常路径 Trace](examples/live/normal/trace-1.jsonl)、[冲突路径 Trace](examples/live/conflict/trace-1.jsonl)
-- [离线验收报告](examples/mock/report.json)、[自动测试结果](examples/test-results.txt)
+- [增强版离线验收报告](examples/mock-v2/report.json)、[42 项自动测试结果](examples/test-results-v2.txt)
 
 `completed` 表示请求中的每项素材都已经得到有证据支持的处理结果；结果可以是阻断或待补资料，**不代表所有素材均可排期**。`partial_failure` 表示至少一项工具操作失败；`incomplete` 表示上限、模型服务错误或模型主动报告未完成。
 
@@ -33,7 +35,7 @@ python3 run.py demo --mode mock --out runtime/review-mock
 python3 -m unittest discover -s tests -v
 ```
 
-演示器在隔离的临时数据库中运行 15 组场景，自动断言结果，并保存输入、实际输出、Trace 与数据库快照。输出目录必须为空；重复演示请换一个目录。
+演示器在隔离的临时数据库中运行 18 组场景，自动断言结果，并保存输入、实际输出、Trace、ReAct 阅读报告与数据库快照。输出目录必须为空；重复演示请换一个目录。原版 15 组证据仍保留在 examples/live 和 examples/mock；增强版分别在 examples/live-v2 和 examples/mock-v2。
 
 **Mock 是确定性测试替身，只验证流程与代码约束，不证明真实模型的决策效果。不会在真实模型失败时自动切换到 Mock。**
 
@@ -61,6 +63,33 @@ python3 run.py demo --mode live --out runtime/review-live-all
 真实模式会产生付费 API 调用。使用官方 Chat Completions API、原生 function tools、非思考模式；不采集模型内部思维过程。每个动作的 `reason` 是可公开的简短事实依据。调用实现见 `src/asset_agent/model.py`。
 
 接入依据：[DeepSeek 工具调用](https://api-docs.deepseek.com/guides/tool_calls/)、[Chat Completions 参数](https://api-docs.deepseek.com/api/create-chat-completion/)、[官方模型名](https://api-docs.deepseek.com/quick_start/pricing/)，核对日期 2026-10-28。
+
+## 查看 ReAct 过程
+
+每行 JSONL 是一次真实事件。可读报告展示简短决策依据、工具名与参数、返回摘要和下一条实际动作，不展示内部思维过程。
+
+```bash
+# 阅读已提交的真实冲突路径，不调用模型、不需要密钥
+python3 run.py trace --input examples/live/conflict/trace-1.jsonl
+
+# 导出 Markdown 或包含显式 next_action 的 JSON
+python3 run.py trace --input examples/live/conflict/trace-1.jsonl \
+  --output runtime/conflict-react.md
+python3 run.py trace --input examples/live/conflict/trace-1.jsonl \
+  --format json --output runtime/conflict-react.json
+
+# 实际执行时逐步观察；日志写入 stderr，run 的 stdout 仍为结果 JSON
+python3 run.py run --mode live --verbose \
+  --input examples/live/conflict/input-1.json --db runtime/verbose.sqlite \
+  --output runtime/verbose-result.json --trace runtime/verbose-trace.jsonl
+
+# 验证执行过程中环境发生变化后的重新规划
+python3 run.py demo --mode live --verbose \
+  --cases race_conflict,stale_material,transient_save_failure \
+  --out runtime/replanning
+```
+
+视图只从源记录派生 next_action，不补写模型日志，不覆盖原始 Trace，并标明原文件 SHA-256。新运行每个场景自动生成 react-N.md 与 react-N.json。发现模型短理由与确认事实冲突时，阅读报告保留原文并标注警告。
 
 ## 单请求与持久化草稿
 

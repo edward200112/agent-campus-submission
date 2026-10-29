@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -11,10 +12,12 @@ from .agent import run_request
 from .domain import DomainError, TZ
 from .model import DeepSeekModel, MockModel
 from .storage import Store
+from .trace_view import read_view, render_markdown
 
 CASES = ["normal", "missing", "risk", "conflict", "duplicate", "save_failure",
          "changed_occupancy", "supplement", "manual_review", "no_slots", "batch",
-         "confirmation", "confirmation_conflict", "step_limit", "tool_limit"]
+         "confirmation", "confirmation_conflict", "step_limit", "tool_limit",
+         "race_conflict", "stale_material", "transient_save_failure"]
 
 
 def request_for(case, material="M01"):
@@ -41,7 +44,7 @@ def verify(case, outputs, snapshots, extra):
     if case not in {"step_limit", "tool_limit"}:
         check(all(o["run_status"] != "incomplete" for o in outputs), "模型未完成本用例")
     check(all(not o["published"] and all(not x["published"] for x in o["items"]) for o in outputs), "不得发布")
-    if case in {"normal", "supplement"}:
+    if case in {"normal", "supplement", "stale_material", "transient_save_failure"}:
         check(first["outcome"] == "draft_ready" and first["scheduled_at"] == first["requested_at"], "应保存原要求时段")
     elif case == "missing":
         check(first["outcome"] == "needs_info" and "rights_proof" in first["missing_fields"], "应指出缺少证明")
@@ -49,7 +52,7 @@ def verify(case, outputs, snapshots, extra):
     elif case in {"risk", "manual_review"}:
         check(first["outcome"] == ("blocked" if case == "risk" else "needs_review"), "风险处理状态错误")
         check(first["risk_reasons"] and snapshots[0]["draft_count"] == 0, "风险必须留证且不可排期")
-    elif case in {"conflict", "changed_occupancy", "confirmation", "confirmation_conflict"}:
+    elif case in {"conflict", "changed_occupancy", "confirmation", "confirmation_conflict", "race_conflict"}:
         check(first["outcome"] == "needs_confirmation" and first["suggested_at"].endswith("19:00:00+08:00"), "18 点冲突应建议最近的 19 点并待确认")
         check(first["scheduled_at"] is None and first["requested_at"].endswith("18:00:00+08:00"), "不得擅自改写硬性要求")
         check(snapshots[0]["draft_count"] == 1 and snapshots[0]["draft_claim_count"] == 0, "待确认提案不应占正式时段")
@@ -87,7 +90,7 @@ def database_snapshot(store):
             "slot_claims": [dict(row) for row in store.conn.execute("SELECT * FROM slot_claims ORDER BY channel,slot")]}
 
 
-def run_case(case, mode, out, data_dir):
+def run_case(case, mode, out, data_dir, on_event=None):
     material = {"missing": "M02", "risk": "M03", "supplement": "M04", "manual_review": "M05"}.get(case, "M01")
     request = request_for(case, material)
     if case == "batch":
@@ -99,8 +102,33 @@ def run_case(case, mode, out, data_dir):
     write(out / "case.json", {"case": case, "mode": mode, "save_failures": -1 if case == "save_failure" else 0})
     outputs, snapshots, extra = [], [], {}
     with tempfile.TemporaryDirectory(prefix="material-agent-demo-") as temp:
+        if case == "stale_material":
+            # Mutate a private fixture copy, never the submitted source catalog.
+            local_data = Path(temp) / "data"
+            shutil.copytree(data_dir, local_data)
+            data_dir = local_data
         store = Store(Path(temp) / "agent.sqlite", schedules)
         try:
+            changed_once = False
+            def before_tool(action, args, tools):
+                nonlocal changed_once
+                if changed_once or action != "save_draft" or not isinstance(args, dict):
+                    return None
+                changed_once = True
+                if case == "race_conflict":
+                    changed = [{"channel": tools.item["channel"], "slot": args["slot"], "owner": "synthetic-race-competitor"}]
+                    store.replace_schedules(changed)
+                    write(out / "external-change.json", {"kind": "slot_taken_after_query", "schedules": changed})
+                    return {"kind": "slot_taken_after_query", "slot": args["slot"], "note": "工具执行前发生合成占用变化，模型将从保存失败观察到冲突"}
+                if case == "stale_material":
+                    path = data_dir / "materials.json"
+                    catalog = json.loads(path.read_text(encoding="utf-8"))
+                    catalog["M01"]["version"] += 1
+                    catalog["M01"]["title"] += "（资料已更新）"
+                    write(path, catalog)
+                    write(out / "materials-after.json", catalog)
+                    return {"kind": "material_changed_after_review", "material_id": "M01", "version": 2}
+                return None
             count = 2 if case in {"duplicate", "changed_occupancy", "confirmation"} else 1
             for index in range(count):
                 if index == 1 and case == "changed_occupancy":
@@ -116,12 +144,16 @@ def run_case(case, mode, out, data_dir):
                 result, events = run_request(request, model, store, data_dir,
                     max_steps=2 if case == "step_limit" else 60,
                     max_tool_calls=2 if case == "tool_limit" else 50,
-                    save_failures=-1 if case == "save_failure" else 0,
-                    trace_path=out / f"trace-{index + 1}.jsonl")
+                    save_failures=-1 if case == "save_failure" else (1 if case == "transient_save_failure" else 0),
+                    trace_path=out / f"trace-{index + 1}.jsonl", on_event=on_event,
+                    before_tool=before_tool if case in {"race_conflict", "stale_material"} else None)
                 outputs.append(result)
                 snapshots.append(database_snapshot(store))
                 write(out / f"output-{index + 1}.json", result)
                 write(out / f"database-{index + 1}.json", snapshots[-1])
+                view = read_view(out / f"trace-{index + 1}.jsonl")
+                write(out / f"react-{index + 1}.json", view)
+                (out / f"react-{index + 1}.md").write_text(render_markdown(view), encoding="utf-8")
             if case == "confirmation_conflict":
                 store.replace_schedules(schedules_for(19))
                 draft = outputs[0]["items"][0]["draft"]["record"]
@@ -133,8 +165,19 @@ def run_case(case, mode, out, data_dir):
                 write(out / "confirmation-attempt.json", {**extra, "source": "simulated_user_cli_in_acceptance_fixture", "published": False})
             try:
                 verify(case, outputs, snapshots, extra)
+                if case in {"race_conflict", "stale_material", "transient_save_failure"}:
+                    code = {"race_conflict": "SLOT_CONFLICT", "stale_material": "STALE_REVIEW", "transient_save_failure": "SAVE_FAILED"}[case]
+                    failed = next((i for i, event in enumerate(events) if event.get("observation", {}).get("code") == code), None)
+                    check(failed is not None, "故障必须实际发生并记录")
+                    later = [event["action"] for event in events[failed + 1:] if event.get("event") == "action"]
+                    if case == "race_conflict":
+                        check("query_slots" in later and later.index("query_slots") < later.index("save_draft"), "模型需重新查时段后保存")
+                    elif case == "stale_material":
+                        check("read_material" in later and "check_rules" in later and "save_draft" in later, "模型需重读并重新审核后保存")
+                    else:
+                        check("save_draft" in later, "瞬时失败后模型需决定再次保存")
                 verification = {"passed": True}
-            except AssertionError as exc:
+            except (AssertionError, ValueError) as exc:
                 verification = {"passed": False, "error": str(exc)}
             write(out / "verification.json", verification)
             return {"case": case, **verification, "runs": len(outputs),
@@ -143,7 +186,7 @@ def run_case(case, mode, out, data_dir):
             store.close()
 
 
-def run_demo(mode, selected, out, data_dir):
+def run_demo(mode, selected, out, data_dir, on_event=None):
     cases = CASES if selected == "all" else selected.split(",")
     if not cases or set(cases) - set(CASES):
         raise DomainError("UNKNOWN_CASE", "用例名称不支持")
@@ -155,7 +198,7 @@ def run_demo(mode, selected, out, data_dir):
         DeepSeekModel()  # Fail before emitting any misleading 'live' case artifacts.
     results = []
     for case in cases:
-        result = run_case(case, mode, out / case, data_dir)
+        result = run_case(case, mode, out / case, data_dir, on_event=on_event)
         results.append(result)
         print(json.dumps({"case_completed": case, "passed": result["passed"], "mode": mode}, ensure_ascii=False), flush=True)
     report = {"passed": all(r["passed"] for r in results), "mode": mode,

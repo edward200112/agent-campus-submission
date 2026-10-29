@@ -182,6 +182,15 @@ class Tools:
             return "unavailable"
         return "failed" if self.last_error else "incomplete"
 
+    def snapshot_state(self):
+        """Facts for the next model turn; these do not choose its next action."""
+        draft = self.saved or self.initial_draft or {}
+        return {"review_status": self.review["status"] if self.review else "not_checked",
+                "save_status": self.save_status, "draft_state": draft.get("state"),
+                "confirmation_status": draft.get("confirmation_status", "not_applicable"),
+                "requested_at": self.item["requested_at"], "suggested_at": draft.get("suggested_at"),
+                "scheduled_at": draft.get("scheduled_at")}
+
     def _finish(self, outcome):
         actual = self.derived_outcome()
         if outcome != actual and outcome != "incomplete":

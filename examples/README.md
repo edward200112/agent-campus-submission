@@ -1,5 +1,7 @@
 # 运行材料索引
 
+增强版入口：[ReAct 阅读索引](react/README.md)、[真实模型 18 组报告](live-v2/report.json)、[离线 18 组报告](mock-v2/report.json)、[42 项测试结果](test-results-v2.txt)。增强版每次运行额外提供 react-N.md 和 react-N.json，后者含显式 next_action。新增 race_conflict、stale_material、transient_save_failure 三组场景，见评估文档。
+
 `live/`：实际 DeepSeek Flash 决策，业务工具与数据为本地合成；`mock/`：离线流程验证，不能作为真实决策证据。两个目录均有 15 组场景、18 次运行及自动验收报告。
 
 每个场景提供 `input-N.json`、`output-N.json`、`trace-N.jsonl`、`database-N.json`（运行后的实际数据库快照）、初始排期及 `verification.json`。重复和变更场景的 N=1、2 在同一数据库执行。演示数据库是临时数据库，不提交二进制数据库；数据库快照由查询实际表生成。

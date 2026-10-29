@@ -3,6 +3,7 @@
 - 题目：素材审核与发布排期 Agent。
 - 数字题号：题干未提供，请按主办方编号填写。
 - 基座模型：DeepSeek Flash，API 模型名 `deepseek-flash`。
+- 增强版：ReAct 阅读/逐步日志/状态预算反馈/执行中变化后的重新规划；42 项自动测试通过，18 组真实模型场景通过。阅读入口 examples/react/README.md。
 - 本地项目：当前仓库根目录。
 - GitHub URL：https://github.com/edward200112/agent-campus-submission
 - 最终 commit SHA：以 `git rev-parse HEAD` 的实际结果及最终交付消息为准。

@@ -1,5 +1,25 @@
 # 测试、实际结果与限制
 
+## 增强版实际验证（2026-10-29）
+
+新增 ReAct 阅读报告、显式 next_action 视图、逐步日志、状态/预算反馈，以及保存时冲突、审核后资料变化、瞬时写入失败三组场景。原版记录保留在下文及 examples/live，不修改历史模型输出。
+
+- 自动测试 **42/42 通过**，包括原有测试与 10 项新增测试；[原始结果](../examples/test-results-v2.txt)。验收矩阵测试包含 18 个场景子用例。
+- 真实 DeepSeek Flash **18/18 场景通过、21 次运行**；[完整报告](../examples/live-v2/report.json)。实际时间 2026-10-29 11:08:11–11:10:23，115 次模型决策/工具调用，累计运行耗时 131.701 秒。
+- 离线 Mock **18/18 场景通过、21 次运行**；[完整报告](../examples/mock-v2/report.json)，只证明流程。
+- 新版本的 21 份实际阅读报告中，未检测到“工具已 confirmed，模型依据仍写待确认”的文案警告；该检查仅覆盖这一明确措辞，不是完整语义正确性证明。
+- 可直接打开 [阅读索引](../examples/react/README.md)，或运行 `python3 run.py trace --input examples/live/conflict/trace-1.jsonl`，无需模型调用。
+
+| 新增场景 | 实际工具反馈与模型动作 | 证据 |
+| --- | --- | --- |
+| race_conflict | 首次保存 SLOT_CONFLICT → 重新 query_slots → 保存 19:00 待确认草稿 | [输入](../examples/live-v2/race_conflict/input-1.json)、[输出](../examples/live-v2/race_conflict/output-1.json)、[Trace](../examples/live-v2/race_conflict/trace-1.jsonl)、[阅读报告](../examples/live-v2/race_conflict/react-1.md) |
+| stale_material | 首次保存 STALE_REVIEW → 重读素材 → 重新 check_rules → 查询并保存 18:00 | [输入](../examples/live-v2/stale_material/input-1.json)、[输出](../examples/live-v2/stale_material/output-1.json)、[Trace](../examples/live-v2/stale_material/trace-1.jsonl)、[阅读报告](../examples/live-v2/stale_material/react-1.md) |
+| transient_save_failure | 首次 SAVE_FAILED → 模型有限重试 → 保存成功后结束 | [输入](../examples/live-v2/transient_save_failure/input-1.json)、[输出](../examples/live-v2/transient_save_failure/output-1.json)、[Trace](../examples/live-v2/transient_save_failure/trace-1.jsonl)、[阅读报告](../examples/live-v2/transient_save_failure/react-1.md) |
+
+三个新场景均断言错误确实发生，且模型后续动作符合重新规划要求；没有通过修改原始 Trace 达成断言。环境变化是明确标注的合成夹具事件。确认边界、失败回滚和执行上限继续通过完整矩阵验证。
+
+## 原版验证记录（2026-10-28）
+
 ## 执行环境和命令
 
 - 日期：2026-10-28，Asia/Shanghai。

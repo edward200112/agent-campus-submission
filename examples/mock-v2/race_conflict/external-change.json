@@ -1,0 +1,10 @@
+{
+  "kind": "slot_taken_after_query",
+  "schedules": [
+    {
+      "channel": "wechat",
+      "slot": "2026-10-29T18:00:00+08:00",
+      "owner": "synthetic-race-competitor"
+    }
+  ]
+}

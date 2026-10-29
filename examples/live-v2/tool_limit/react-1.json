@@ -1,0 +1,151 @@
+{
+  "source": "examples/live-v2/tool_limit/trace-1.jsonl",
+  "source_sha256": "b34b881e8cd5474bc61c30e2f05043b6037eca29c0f341f5fad5ac7125f94f05",
+  "modes": [
+    "live"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 2,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M01",
+      "decision_summary": "开始审核素材 M01，先读取基础元数据。",
+      "action": "read_material",
+      "arguments": {
+        "reason": "开始审核素材 M01，先读取基础元数据。",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告",
+          "version": 1
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 1
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "基础资料已读取，渠道与版权状态已明确，现检查内部规则。"
+        },
+        "decision_summary": "基础资料已读取，渠道与版权状态已明确，现检查内部规则。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "bdf8d6a7-237d-45fb-b365-b1d980388d95",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 59,
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 238,
+          "prompt_tokens": 1262,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "total_tokens": 1321
+        }
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M01",
+      "decision_summary": "基础资料已读取，渠道与版权状态已明确，现检查内部规则。",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "基础资料已读取，渠道与版权状态已明确，现检查内部规则。"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 0
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": null,
+      "termination": "tool_call_limit",
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "45a244b2-a950-4cae-a61e-14ef88616834",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 48,
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 288,
+          "prompt_tokens": 1568,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "total_tokens": 1616
+        }
+      }
+    }
+  ],
+  "other_events": [
+    {
+      "at": "2026-10-29T11:09:58+08:00",
+      "event": "stopped",
+      "material_id": "M01",
+      "mode": "live",
+      "reason": "tool_call_limit",
+      "step": 2,
+      "source_line": 3
+    }
+  ],
+  "warnings": []
+}

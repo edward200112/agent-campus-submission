@@ -1,0 +1,275 @@
+{
+  "source": "examples/live-v2/missing/trace-1.jsonl",
+  "source_sha256": "b01a9995bec3a9674b1ded6cc3e0090e6d5ac9373f6502f36d2365248dcc6f58",
+  "modes": [
+    "live"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 4,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M02",
+      "decision_summary": "开始审核素材 M02，先读取基础元数据。",
+      "action": "read_material",
+      "arguments": {
+        "reason": "开始审核素材 M02，先读取基础元数据。",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：缺少授权资料的合成素材；证明资料缺失",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": null,
+          "rights_status": "unknown",
+          "supplementary_available": true,
+          "text": "活动回顾。",
+          "title": "缺少授权资料的合成素材",
+          "version": 1
+        },
+        "material_id": "M02",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 49
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "88d69c0f3eb5196990efde5e5fa2bcda6703648db484979d8451e6ee9126ecdd",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "read_material",
+        "arguments": {
+          "reason": "基础资料显示 rights_status 为 unknown 且可补查，先补查证明资料。",
+          "section": "supplementary"
+        },
+        "decision_summary": "基础资料显示 rights_status 为 unknown 且可补查，先补查证明资料。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "522ab57a-fee1-4740-893f-6dfc9e68516f",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 59,
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 237,
+          "prompt_tokens": 1261,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "total_tokens": 1320
+        }
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M02",
+      "decision_summary": "基础资料显示 rights_status 为 unknown 且可补查，先补查证明资料。",
+      "action": "read_material",
+      "arguments": {
+        "reason": "基础资料显示 rights_status 为 unknown 且可补查，先补查证明资料。",
+        "section": "supplementary"
+      },
+      "observation_summary": "读取 supplementary：缺少授权资料的合成素材；证明资料缺失",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": null,
+          "rights_status": "unknown",
+          "supplementary_available": true,
+          "text": "活动回顾。",
+          "title": "缺少授权资料的合成素材",
+          "version": 1
+        },
+        "material_id": "M02",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 48
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "supplementary",
+        "snapshot": "88d69c0f3eb5196990efde5e5fa2bcda6703648db484979d8451e6ee9126ecdd",
+        "supplementary_loaded": true
+      },
+      "next_action": {
+        "step": 3,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "补查后 rights_proof 仍为空、rights_status 仍为 unknown，需按规则检查。"
+        },
+        "decision_summary": "补查后 rights_proof 仍为空、rights_status 仍为 unknown，需按规则检查。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "5c5b668a-d189-4d90-b991-10890232ec25",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 68,
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 267,
+          "prompt_tokens": 1547,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "total_tokens": 1615
+        }
+      }
+    },
+    {
+      "step": 3,
+      "source_line": 3,
+      "material_id": "M02",
+      "decision_summary": "补查后 rights_proof 仍为空、rights_status 仍为 unknown，需按规则检查。",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "补查后 rights_proof 仍为空、rights_status 仍为 unknown，需按规则检查。"
+      },
+      "observation_summary": "审核 needs_info；缺失 rights_proof；风险 0 项",
+      "observation": {
+        "material_id": "M02",
+        "missing_fields": [
+          "rights_proof"
+        ],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 9,
+            "remaining_steps": 57,
+            "remaining_tool_calls": 47
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "needs_info",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "88d69c0f3eb5196990efde5e5fa2bcda6703648db484979d8451e6ee9126ecdd",
+        "status": "needs_info",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 4,
+        "action": "finish",
+        "arguments": {
+          "outcome": "needs_info",
+          "reason": "补查后仍缺 rights_proof，规则判定 needs_info，需用户补充授权资料。"
+        },
+        "decision_summary": "补查后仍缺 rights_proof，规则判定 needs_info，需用户补充授权资料。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "0d9bb091-8036-4f5b-96f4-9c65005b918f",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 54,
+          "prompt_cache_hit_tokens": 1536,
+          "prompt_cache_miss_tokens": 307,
+          "prompt_tokens": 1843,
+          "prompt_tokens_details": {
+            "cached_tokens": 1536
+          },
+          "total_tokens": 1897
+        }
+      }
+    },
+    {
+      "step": 4,
+      "source_line": 4,
+      "material_id": "M02",
+      "decision_summary": "补查后仍缺 rights_proof，规则判定 needs_info，需用户补充授权资料。",
+      "action": "finish",
+      "arguments": {
+        "outcome": "needs_info",
+        "reason": "补查后仍缺 rights_proof，规则判定 needs_info，需用户补充授权资料。"
+      },
+      "observation_summary": "结束：needs_info；仅处理草稿，未发布",
+      "observation": {
+        "material_id": "M02",
+        "ok": true,
+        "outcome": "needs_info",
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 8,
+            "remaining_steps": 56,
+            "remaining_tool_calls": 46
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "needs_info",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        }
+      },
+      "next_action": null,
+      "termination": "finish:needs_info",
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "d18b682d-8757-4dec-a991-e65a0bae0115",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 69,
+          "prompt_cache_hit_tokens": 1792,
+          "prompt_cache_miss_tokens": 304,
+          "prompt_tokens": 2096,
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          },
+          "total_tokens": 2165
+        }
+      }
+    }
+  ],
+  "other_events": [],
+  "warnings": []
+}

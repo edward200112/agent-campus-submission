@@ -1,0 +1,350 @@
+{
+  "source": "examples/live-v2/duplicate/trace-2.jsonl",
+  "source_sha256": "ba587695abb9077249fd11eb0554635430a4c0124ef707d1a10284caf0269eb9",
+  "modes": [
+    "live"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 5,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M01",
+      "decision_summary": "当前草稿已存在且状态 ready，需先读取基础资料确认素材与审核依据。",
+      "action": "read_material",
+      "arguments": {
+        "reason": "当前草稿已存在且状态 ready，需先读取基础资料确认素材与审核依据。",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告",
+          "version": 1
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 49
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        },
+        "section": "base",
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "基础资料已读取，渠道 wechat 在允许列表内，需按规则检查审核结论。"
+        },
+        "decision_summary": "基础资料已读取，渠道 wechat 在允许列表内，需按规则检查审核结论。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "f0b8e32e-34b3-4cb4-a76b-70935405a6d2",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 67,
+          "prompt_cache_hit_tokens": 1152,
+          "prompt_cache_miss_tokens": 312,
+          "prompt_tokens": 1464,
+          "prompt_tokens_details": {
+            "cached_tokens": 1152
+          },
+          "total_tokens": 1531
+        }
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M01",
+      "decision_summary": "基础资料已读取，渠道 wechat 在允许列表内，需按规则检查审核结论。",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "基础资料已读取，渠道 wechat 在允许列表内，需按规则检查审核结论。"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 48
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        },
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 3,
+        "action": "query_slots",
+        "arguments": {
+          "reason": "审核已通过，需查询 requested 时段 2026-10-29T18:00+08:00 的可用性。",
+          "scope": "requested"
+        },
+        "decision_summary": "审核已通过，需查询 requested 时段 2026-10-29T18:00+08:00 的可用性。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "5fda6eae-d973-48e7-97a1-304a6b2b2090",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 52,
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 400,
+          "prompt_tokens": 1808,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "total_tokens": 1860
+        }
+      }
+    },
+    {
+      "step": 3,
+      "source_line": 3,
+      "material_id": "M01",
+      "decision_summary": "审核已通过，需查询 requested 时段 2026-10-29T18:00+08:00 的可用性。",
+      "action": "query_slots",
+      "arguments": {
+        "reason": "审核已通过，需查询 requested 时段 2026-10-29T18:00+08:00 的可用性。",
+        "scope": "requested"
+      },
+      "observation_summary": "查询 requested；可用 18:00；占用/不可用 无",
+      "observation": {
+        "checked_at": "2026-10-29T11:08:39+08:00",
+        "material_id": "M01",
+        "note": "替代时段仅为建议；待确认提案不占用正式时段，确认时再次复查",
+        "ok": true,
+        "ranked_available_slots": [
+          "2026-10-29T18:00:00+08:00"
+        ],
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 9,
+            "remaining_steps": 57,
+            "remaining_tool_calls": 47
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        },
+        "scope": "requested",
+        "slots": [
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T18:00:00+08:00"
+          }
+        ]
+      },
+      "next_action": {
+        "step": 4,
+        "action": "save_draft",
+        "arguments": {
+          "reason": "审核通过且 requested 时段 2026-10-29T18:00+08:00 可用，保存草稿。",
+          "slot": "2026-10-29T18:00:00+08:00"
+        },
+        "decision_summary": "审核通过且 requested 时段 2026-10-29T18:00+08:00 可用，保存草稿。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "0079a1fa-d8a9-4fec-a48a-aa600255aa64",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 77,
+          "prompt_cache_hit_tokens": 1792,
+          "prompt_cache_miss_tokens": 289,
+          "prompt_tokens": 2081,
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          },
+          "total_tokens": 2158
+        }
+      }
+    },
+    {
+      "step": 4,
+      "source_line": 4,
+      "material_id": "M01",
+      "decision_summary": "审核通过且 requested 时段 2026-10-29T18:00+08:00 可用，保存草稿。",
+      "action": "save_draft",
+      "arguments": {
+        "reason": "审核通过且 requested 时段 2026-10-29T18:00+08:00 可用，保存草稿。",
+        "slot": "2026-10-29T18:00:00+08:00"
+      },
+      "observation_summary": "保存 existing；草稿 D-c2297fc92c9a；状态 ready；确认 not_required",
+      "observation": {
+        "draft": {
+          "approved_alternative_at": null,
+          "channel": "wechat",
+          "confirmation_status": "not_required",
+          "id": "D-c2297fc92c9a",
+          "material_id": "M01",
+          "request_id": "demo-duplicate-001",
+          "requested_at": "2026-10-29T18:00:00+08:00",
+          "requirement_type": "hard",
+          "revision": 1,
+          "rules_version": "synthetic-rules-v1",
+          "scheduled_at": "2026-10-29T18:00:00+08:00",
+          "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+          "state": "ready",
+          "suggested_at": "2026-10-29T18:00:00+08:00",
+          "supplementary_loaded": false,
+          "updated_at": "2026-10-29T11:08:35+08:00"
+        },
+        "material_id": "M01",
+        "ok": true,
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 8,
+            "remaining_steps": 56,
+            "remaining_tool_calls": 46
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "existing",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        },
+        "save_status": "existing"
+      },
+      "next_action": {
+        "step": 5,
+        "action": "finish",
+        "arguments": {
+          "outcome": "draft_ready",
+          "reason": "审核通过，requested 时段可用，草稿已存在（save_status=existing）且 confirmation_status=not_required。"
+        },
+        "decision_summary": "审核通过，requested 时段可用，草稿已存在（save_status=existing）且 confirmation_status=not_required。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "a767ec60-4253-476d-a6e3-2f01f00d1ac5",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 90,
+          "prompt_cache_hit_tokens": 2048,
+          "prompt_cache_miss_tokens": 364,
+          "prompt_tokens": 2412,
+          "prompt_tokens_details": {
+            "cached_tokens": 2048
+          },
+          "total_tokens": 2502
+        }
+      }
+    },
+    {
+      "step": 5,
+      "source_line": 5,
+      "material_id": "M01",
+      "decision_summary": "审核通过，requested 时段可用，草稿已存在（save_status=existing）且 confirmation_status=not_required。",
+      "action": "finish",
+      "arguments": {
+        "outcome": "draft_ready",
+        "reason": "审核通过，requested 时段可用，草稿已存在（save_status=existing）且 confirmation_status=not_required。"
+      },
+      "observation_summary": "结束：draft_ready；仅处理草稿，未发布",
+      "observation": {
+        "material_id": "M01",
+        "ok": true,
+        "outcome": "draft_ready",
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 7,
+            "remaining_steps": 55,
+            "remaining_tool_calls": 45
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "existing",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        }
+      },
+      "next_action": null,
+      "termination": "finish:draft_ready",
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "0354f4c2-7464-4fea-9075-650f9c268319",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 77,
+          "prompt_cache_hit_tokens": 2432,
+          "prompt_cache_miss_tokens": 434,
+          "prompt_tokens": 2866,
+          "prompt_tokens_details": {
+            "cached_tokens": 2432
+          },
+          "total_tokens": 2943
+        }
+      }
+    }
+  ],
+  "other_events": [],
+  "warnings": []
+}

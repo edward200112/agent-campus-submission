@@ -1,0 +1,206 @@
+{
+  "source": "examples/live-v2/manual_review/trace-1.jsonl",
+  "source_sha256": "9abe750b56afd032f8c8ad90f6381836cbdd7ea8ad9564c12283f7722875a0d3",
+  "modes": [
+    "live"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 3,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M05",
+      "decision_summary": "开始审核素材 M05，先读取基础元数据。",
+      "action": "read_material",
+      "arguments": {
+        "reason": "开始审核素材 M05，先读取基础元数据。",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：需人工核实的合成素材；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-005",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "内部测试待核实表达：销量第一。",
+          "title": "需人工核实的合成素材",
+          "version": 1
+        },
+        "material_id": "M05",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 49
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "e1338eb238c32c7af7c74983884b6d34ff8e6ffe869a89f9155c5837dd22447d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "基础资料显示正文含\"销量第一\"待核实表达，需按规则检查。"
+        },
+        "decision_summary": "基础资料显示正文含\"销量第一\"待核实表达，需按规则检查。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "56ffe457-62be-4561-a544-73557c7c6912",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 59,
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 239,
+          "prompt_tokens": 1263,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "total_tokens": 1322
+        }
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M05",
+      "decision_summary": "基础资料显示正文含\"销量第一\"待核实表达，需按规则检查。",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "基础资料显示正文含\"销量第一\"待核实表达，需按规则检查。"
+      },
+      "observation_summary": "审核 needs_review；缺失 无；风险 1 项",
+      "observation": {
+        "material_id": "M05",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [
+          {
+            "message": "该表述需人工核实，当前项目不提供风险人工放行入口",
+            "rule_id": "R002",
+            "severity": "review"
+          }
+        ],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 48
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "needs_review",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "e1338eb238c32c7af7c74983884b6d34ff8e6ffe869a89f9155c5837dd22447d",
+        "status": "needs_review",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 3,
+        "action": "finish",
+        "arguments": {
+          "outcome": "needs_review",
+          "reason": "规则 R002 判定\"销量第一\"表述需人工核实，且无补查入口与人工放行入口。"
+        },
+        "decision_summary": "规则 R002 判定\"销量第一\"表述需人工核实，且无补查入口与人工放行入口。"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "7f127171-b86d-4f4d-b8d2-f30e9e297bd1",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 49,
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 286,
+          "prompt_tokens": 1566,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "total_tokens": 1615
+        }
+      }
+    },
+    {
+      "step": 3,
+      "source_line": 3,
+      "material_id": "M05",
+      "decision_summary": "规则 R002 判定\"销量第一\"表述需人工核实，且无补查入口与人工放行入口。",
+      "action": "finish",
+      "arguments": {
+        "outcome": "needs_review",
+        "reason": "规则 R002 判定\"销量第一\"表述需人工核实，且无补查入口与人工放行入口。"
+      },
+      "observation_summary": "结束：needs_review；仅处理草稿，未发布",
+      "observation": {
+        "material_id": "M05",
+        "ok": true,
+        "outcome": "needs_review",
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 9,
+            "remaining_steps": 57,
+            "remaining_tool_calls": 47
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "needs_review",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        }
+      },
+      "next_action": null,
+      "termination": "finish:needs_review",
+      "provider": {
+        "mode": "live",
+        "requested_model": "deepseek-flash",
+        "response_id": "57ee3dc9-f403-4cc0-a3fa-ae0e1b9b4e00",
+        "returned_model": "deepseek-flash",
+        "usage": {
+          "completion_tokens": 75,
+          "prompt_cache_hit_tokens": 1536,
+          "prompt_cache_miss_tokens": 305,
+          "prompt_tokens": 1841,
+          "prompt_tokens_details": {
+            "cached_tokens": 1536
+          },
+          "total_tokens": 1916
+        }
+      }
+    }
+  ],
+  "other_events": [],
+  "warnings": []
+}

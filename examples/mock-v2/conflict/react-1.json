@@ -1,0 +1,430 @@
+{
+  "source": "examples/mock-v2/conflict/trace-1.jsonl",
+  "source_sha256": "0307281d74277f6399e9dbcb3b3855bda115417749da531ac7d0d56de3acc872",
+  "modes": [
+    "mock"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 6,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M01",
+      "decision_summary": "读取当前素材的基础资料",
+      "action": "read_material",
+      "arguments": {
+        "reason": "读取当前素材的基础资料",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告",
+          "version": 1
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 49
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "根据最新读取资料检查规则"
+        },
+        "decision_summary": "根据最新读取资料检查规则"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M01",
+      "decision_summary": "根据最新读取资料检查规则",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "根据最新读取资料检查规则"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 48
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 3,
+        "action": "query_slots",
+        "arguments": {
+          "reason": "审核通过，检查用户要求的时段",
+          "scope": "requested"
+        },
+        "decision_summary": "审核通过，检查用户要求的时段"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 3,
+      "source_line": 3,
+      "material_id": "M01",
+      "decision_summary": "审核通过，检查用户要求的时段",
+      "action": "query_slots",
+      "arguments": {
+        "reason": "审核通过，检查用户要求的时段",
+        "scope": "requested"
+      },
+      "observation_summary": "查询 requested；可用 无；占用/不可用 18:00",
+      "observation": {
+        "checked_at": "2026-10-29T11:10:30+08:00",
+        "material_id": "M01",
+        "note": "替代时段仅为建议；待确认提案不占用正式时段，确认时再次复查",
+        "ok": true,
+        "ranked_available_slots": [],
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 9,
+            "remaining_steps": 57,
+            "remaining_tool_calls": 47
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "scope": "requested",
+        "slots": [
+          {
+            "available": false,
+            "occupied_by": {
+              "owner": "synthetic-existing-18",
+              "source": "schedule"
+            },
+            "slot": "2026-10-29T18:00:00+08:00"
+          }
+        ]
+      },
+      "next_action": {
+        "step": 4,
+        "action": "query_slots",
+        "arguments": {
+          "reason": "要求时段已占用，查询当日替代时段",
+          "scope": "day"
+        },
+        "decision_summary": "要求时段已占用，查询当日替代时段"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 4,
+      "source_line": 4,
+      "material_id": "M01",
+      "decision_summary": "要求时段已占用，查询当日替代时段",
+      "action": "query_slots",
+      "arguments": {
+        "reason": "要求时段已占用，查询当日替代时段",
+        "scope": "day"
+      },
+      "observation_summary": "查询 day；可用 19:00, 17:00, 20:00, 16:00…；占用/不可用 18:00",
+      "observation": {
+        "checked_at": "2026-10-29T11:10:30+08:00",
+        "material_id": "M01",
+        "note": "替代时段仅为建议；待确认提案不占用正式时段，确认时再次复查",
+        "ok": true,
+        "ranked_available_slots": [
+          "2026-10-29T19:00:00+08:00",
+          "2026-10-29T17:00:00+08:00",
+          "2026-10-29T20:00:00+08:00",
+          "2026-10-29T16:00:00+08:00",
+          "2026-10-29T15:00:00+08:00",
+          "2026-10-29T14:00:00+08:00",
+          "2026-10-29T13:00:00+08:00",
+          "2026-10-29T12:00:00+08:00",
+          "2026-10-29T11:00:00+08:00",
+          "2026-10-29T10:00:00+08:00",
+          "2026-10-29T09:00:00+08:00"
+        ],
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 8,
+            "remaining_steps": 56,
+            "remaining_tool_calls": 46
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "scope": "day",
+        "slots": [
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T09:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T10:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T11:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T12:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T13:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T14:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T15:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T16:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T17:00:00+08:00"
+          },
+          {
+            "available": false,
+            "occupied_by": {
+              "owner": "synthetic-existing-18",
+              "source": "schedule"
+            },
+            "slot": "2026-10-29T18:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T19:00:00+08:00"
+          },
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T20:00:00+08:00"
+          }
+        ]
+      },
+      "next_action": {
+        "step": 5,
+        "action": "save_draft",
+        "arguments": {
+          "reason": "保存已查询可用的提案；改时由工具标记待确认",
+          "slot": "2026-10-29T19:00:00+08:00"
+        },
+        "decision_summary": "保存已查询可用的提案；改时由工具标记待确认"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 5,
+      "source_line": 5,
+      "material_id": "M01",
+      "decision_summary": "保存已查询可用的提案；改时由工具标记待确认",
+      "action": "save_draft",
+      "arguments": {
+        "reason": "保存已查询可用的提案；改时由工具标记待确认",
+        "slot": "2026-10-29T19:00:00+08:00"
+      },
+      "observation_summary": "保存 saved；草稿 D-2a01c3799ab1；状态 pending_confirmation；确认 pending",
+      "observation": {
+        "draft": {
+          "approved_alternative_at": null,
+          "channel": "wechat",
+          "confirmation_status": "pending",
+          "id": "D-2a01c3799ab1",
+          "material_id": "M01",
+          "request_id": "demo-conflict-001",
+          "requested_at": "2026-10-29T18:00:00+08:00",
+          "requirement_type": "hard",
+          "revision": 1,
+          "rules_version": "synthetic-rules-v1",
+          "scheduled_at": null,
+          "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+          "state": "pending_confirmation",
+          "suggested_at": "2026-10-29T19:00:00+08:00",
+          "supplementary_loaded": false,
+          "updated_at": "2026-10-29T11:10:30+08:00"
+        },
+        "material_id": "M01",
+        "ok": true,
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 7,
+            "remaining_steps": 55,
+            "remaining_tool_calls": 45
+          },
+          "state": {
+            "confirmation_status": "pending",
+            "draft_state": "pending_confirmation",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "saved",
+            "scheduled_at": null,
+            "suggested_at": "2026-10-29T19:00:00+08:00"
+          }
+        },
+        "save_status": "saved"
+      },
+      "next_action": {
+        "step": 6,
+        "action": "finish",
+        "arguments": {
+          "outcome": "needs_confirmation",
+          "reason": "根据实际保存回执结束；仅保存草稿"
+        },
+        "decision_summary": "根据实际保存回执结束；仅保存草稿"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 6,
+      "source_line": 6,
+      "material_id": "M01",
+      "decision_summary": "根据实际保存回执结束；仅保存草稿",
+      "action": "finish",
+      "arguments": {
+        "outcome": "needs_confirmation",
+        "reason": "根据实际保存回执结束；仅保存草稿"
+      },
+      "observation_summary": "结束：needs_confirmation；仅处理草稿，未发布",
+      "observation": {
+        "material_id": "M01",
+        "ok": true,
+        "outcome": "needs_confirmation",
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 6,
+            "remaining_steps": 54,
+            "remaining_tool_calls": 44
+          },
+          "state": {
+            "confirmation_status": "pending",
+            "draft_state": "pending_confirmation",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "saved",
+            "scheduled_at": null,
+            "suggested_at": "2026-10-29T19:00:00+08:00"
+          }
+        }
+      },
+      "next_action": null,
+      "termination": "finish:needs_confirmation",
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    }
+  ],
+  "other_events": [],
+  "warnings": []
+}

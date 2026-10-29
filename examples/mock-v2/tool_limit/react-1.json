@@ -1,0 +1,131 @@
+{
+  "source": "examples/mock-v2/tool_limit/trace-1.jsonl",
+  "source_sha256": "a40ca3f87837321a496c5452134bd78c6bd6d688105e75ddd7700adbe5798809",
+  "modes": [
+    "mock"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 2,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M01",
+      "decision_summary": "读取当前素材的基础资料",
+      "action": "read_material",
+      "arguments": {
+        "reason": "读取当前素材的基础资料",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告",
+          "version": 1
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 1
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "根据最新读取资料检查规则"
+        },
+        "decision_summary": "根据最新读取资料检查规则"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M01",
+      "decision_summary": "根据最新读取资料检查规则",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "根据最新读取资料检查规则"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 0
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": null,
+      "termination": "tool_call_limit",
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    }
+  ],
+  "other_events": [
+    {
+      "at": "2026-10-29T11:10:30+08:00",
+      "event": "stopped",
+      "material_id": "M01",
+      "mode": "mock",
+      "reason": "tool_call_limit",
+      "step": 2,
+      "source_line": 3
+    }
+  ],
+  "warnings": []
+}

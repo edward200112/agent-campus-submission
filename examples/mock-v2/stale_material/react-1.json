@@ -1,0 +1,542 @@
+{
+  "source": "examples/mock-v2/stale_material/trace-1.jsonl",
+  "source_sha256": "92900e95294e523999b53a33daaea94f853f56773cbc861907c03a2fe69df8c6",
+  "modes": [
+    "mock"
+  ],
+  "note": "只根据原始 Trace 生成视图；next_action 来自同一素材后续实际动作，不是补写的计划；reason 是公开简短依据，不是内部思维过程",
+  "action_count": 9,
+  "steps": [
+    {
+      "step": 1,
+      "source_line": 1,
+      "material_id": "M01",
+      "decision_summary": "读取当前素材的基础资料",
+      "action": "read_material",
+      "arguments": {
+        "reason": "读取当前素材的基础资料",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告",
+          "version": 1
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 11,
+            "remaining_steps": 59,
+            "remaining_tool_calls": 49
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 2,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "根据最新读取资料检查规则"
+        },
+        "decision_summary": "根据最新读取资料检查规则"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 2,
+      "source_line": 2,
+      "material_id": "M01",
+      "decision_summary": "根据最新读取资料检查规则",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "根据最新读取资料检查规则"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 10,
+            "remaining_steps": 58,
+            "remaining_tool_calls": 48
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "855264bb6201c1e56ef6ebf819073831bd8f9b2eb63c0aaf59fef112ef8b327d",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 3,
+        "action": "query_slots",
+        "arguments": {
+          "reason": "审核通过，检查用户要求的时段",
+          "scope": "requested"
+        },
+        "decision_summary": "审核通过，检查用户要求的时段"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 3,
+      "source_line": 3,
+      "material_id": "M01",
+      "decision_summary": "审核通过，检查用户要求的时段",
+      "action": "query_slots",
+      "arguments": {
+        "reason": "审核通过，检查用户要求的时段",
+        "scope": "requested"
+      },
+      "observation_summary": "查询 requested；可用 18:00；占用/不可用 无",
+      "observation": {
+        "checked_at": "2026-10-29T11:10:30+08:00",
+        "material_id": "M01",
+        "note": "替代时段仅为建议；待确认提案不占用正式时段，确认时再次复查",
+        "ok": true,
+        "ranked_available_slots": [
+          "2026-10-29T18:00:00+08:00"
+        ],
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 9,
+            "remaining_steps": 57,
+            "remaining_tool_calls": 47
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "not_attempted",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "scope": "requested",
+        "slots": [
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T18:00:00+08:00"
+          }
+        ]
+      },
+      "next_action": {
+        "step": 4,
+        "action": "save_draft",
+        "arguments": {
+          "reason": "保存已查询可用的提案；改时由工具标记待确认",
+          "slot": "2026-10-29T18:00:00+08:00"
+        },
+        "decision_summary": "保存已查询可用的提案；改时由工具标记待确认"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 4,
+      "source_line": 5,
+      "material_id": "M01",
+      "decision_summary": "保存已查询可用的提案；改时由工具标记待确认",
+      "action": "save_draft",
+      "arguments": {
+        "reason": "保存已查询可用的提案；改时由工具标记待确认",
+        "slot": "2026-10-29T18:00:00+08:00"
+      },
+      "observation_summary": "失败 STALE_REVIEW：资料或规则变化，必须重新读取和审核",
+      "observation": {
+        "code": "STALE_REVIEW",
+        "message": "资料或规则变化，必须重新读取和审核",
+        "ok": false,
+        "retryable": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 8,
+            "remaining_steps": 56,
+            "remaining_tool_calls": 46
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "failed",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        }
+      },
+      "next_action": {
+        "step": 5,
+        "action": "read_material",
+        "arguments": {
+          "reason": "工具指出资料或版本已过期，重新读取并审核",
+          "section": "base"
+        },
+        "decision_summary": "工具指出资料或版本已过期，重新读取并审核"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 5,
+      "source_line": 6,
+      "material_id": "M01",
+      "decision_summary": "工具指出资料或版本已过期，重新读取并审核",
+      "action": "read_material",
+      "arguments": {
+        "reason": "工具指出资料或版本已过期，重新读取并审核",
+        "section": "base"
+      },
+      "observation_summary": "读取 base：秋日新品预告（资料已更新）；证明资料已提供",
+      "observation": {
+        "material": {
+          "allowed_channels": [
+            "wechat",
+            "weibo"
+          ],
+          "owner": "合成内容团队",
+          "rights_proof": "SYNTHETIC-LICENSE-001",
+          "rights_status": "cleared",
+          "supplementary_available": false,
+          "text": "秋日新品明日见，欢迎了解产品详情。",
+          "title": "秋日新品预告（资料已更新）",
+          "version": 2
+        },
+        "material_id": "M01",
+        "ok": true,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 7,
+            "remaining_steps": 55,
+            "remaining_tool_calls": 45
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "not_checked",
+            "save_status": "failed",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "section": "base",
+        "snapshot": "414f973566b3b73e4824aed5e5eb2e2c8bf66629f5fd9543fad84d10486afc6b",
+        "supplementary_loaded": false
+      },
+      "next_action": {
+        "step": 6,
+        "action": "check_rules",
+        "arguments": {
+          "reason": "根据最新读取资料检查规则"
+        },
+        "decision_summary": "根据最新读取资料检查规则"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 6,
+      "source_line": 7,
+      "material_id": "M01",
+      "decision_summary": "根据最新读取资料检查规则",
+      "action": "check_rules",
+      "arguments": {
+        "reason": "根据最新读取资料检查规则"
+      },
+      "observation_summary": "审核 passed；缺失 无；风险 0 项",
+      "observation": {
+        "material_id": "M01",
+        "missing_fields": [],
+        "ok": true,
+        "reasons": [],
+        "rules_version": "synthetic-rules-v1",
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 6,
+            "remaining_steps": 54,
+            "remaining_tool_calls": 44
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "failed",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "snapshot": "414f973566b3b73e4824aed5e5eb2e2c8bf66629f5fd9543fad84d10486afc6b",
+        "status": "passed",
+        "supplementary_available": false
+      },
+      "next_action": {
+        "step": 7,
+        "action": "query_slots",
+        "arguments": {
+          "reason": "审核通过，检查用户要求的时段",
+          "scope": "requested"
+        },
+        "decision_summary": "审核通过，检查用户要求的时段"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 7,
+      "source_line": 8,
+      "material_id": "M01",
+      "decision_summary": "审核通过，检查用户要求的时段",
+      "action": "query_slots",
+      "arguments": {
+        "reason": "审核通过，检查用户要求的时段",
+        "scope": "requested"
+      },
+      "observation_summary": "查询 requested；可用 18:00；占用/不可用 无",
+      "observation": {
+        "checked_at": "2026-10-29T11:10:30+08:00",
+        "material_id": "M01",
+        "note": "替代时段仅为建议；待确认提案不占用正式时段，确认时再次复查",
+        "ok": true,
+        "ranked_available_slots": [
+          "2026-10-29T18:00:00+08:00"
+        ],
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 5,
+            "remaining_steps": 53,
+            "remaining_tool_calls": 43
+          },
+          "state": {
+            "confirmation_status": "not_applicable",
+            "draft_state": null,
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "failed",
+            "scheduled_at": null,
+            "suggested_at": null
+          }
+        },
+        "scope": "requested",
+        "slots": [
+          {
+            "available": true,
+            "occupied_by": null,
+            "slot": "2026-10-29T18:00:00+08:00"
+          }
+        ]
+      },
+      "next_action": {
+        "step": 8,
+        "action": "save_draft",
+        "arguments": {
+          "reason": "保存已查询可用的提案；改时由工具标记待确认",
+          "slot": "2026-10-29T18:00:00+08:00"
+        },
+        "decision_summary": "保存已查询可用的提案；改时由工具标记待确认"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 8,
+      "source_line": 9,
+      "material_id": "M01",
+      "decision_summary": "保存已查询可用的提案；改时由工具标记待确认",
+      "action": "save_draft",
+      "arguments": {
+        "reason": "保存已查询可用的提案；改时由工具标记待确认",
+        "slot": "2026-10-29T18:00:00+08:00"
+      },
+      "observation_summary": "保存 saved；草稿 D-f911cef91aba；状态 ready；确认 not_required",
+      "observation": {
+        "draft": {
+          "approved_alternative_at": null,
+          "channel": "wechat",
+          "confirmation_status": "not_required",
+          "id": "D-f911cef91aba",
+          "material_id": "M01",
+          "request_id": "demo-stale_material-001",
+          "requested_at": "2026-10-29T18:00:00+08:00",
+          "requirement_type": "hard",
+          "revision": 1,
+          "rules_version": "synthetic-rules-v1",
+          "scheduled_at": "2026-10-29T18:00:00+08:00",
+          "snapshot": "414f973566b3b73e4824aed5e5eb2e2c8bf66629f5fd9543fad84d10486afc6b",
+          "state": "ready",
+          "suggested_at": "2026-10-29T18:00:00+08:00",
+          "supplementary_loaded": false,
+          "updated_at": "2026-10-29T11:10:30+08:00"
+        },
+        "material_id": "M01",
+        "ok": true,
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 4,
+            "remaining_steps": 52,
+            "remaining_tool_calls": 42
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "saved",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        },
+        "save_status": "saved"
+      },
+      "next_action": {
+        "step": 9,
+        "action": "finish",
+        "arguments": {
+          "outcome": "draft_ready",
+          "reason": "根据实际保存回执结束；仅保存草稿"
+        },
+        "decision_summary": "根据实际保存回执结束；仅保存草稿"
+      },
+      "termination": null,
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    },
+    {
+      "step": 9,
+      "source_line": 10,
+      "material_id": "M01",
+      "decision_summary": "根据实际保存回执结束；仅保存草稿",
+      "action": "finish",
+      "arguments": {
+        "outcome": "draft_ready",
+        "reason": "根据实际保存回执结束；仅保存草稿"
+      },
+      "observation_summary": "结束：draft_ready；仅处理草稿，未发布",
+      "observation": {
+        "material_id": "M01",
+        "ok": true,
+        "outcome": "draft_ready",
+        "published": false,
+        "runtime": {
+          "budget": {
+            "remaining_item_steps": 3,
+            "remaining_steps": 51,
+            "remaining_tool_calls": 41
+          },
+          "state": {
+            "confirmation_status": "not_required",
+            "draft_state": "ready",
+            "requested_at": "2026-10-29T18:00:00+08:00",
+            "review_status": "passed",
+            "save_status": "saved",
+            "scheduled_at": "2026-10-29T18:00:00+08:00",
+            "suggested_at": "2026-10-29T18:00:00+08:00"
+          }
+        }
+      },
+      "next_action": null,
+      "termination": "finish:draft_ready",
+      "provider": {
+        "mode": "mock",
+        "requested_model": "offline-observation-mock",
+        "returned_model": "offline-observation-mock",
+        "usage": {}
+      }
+    }
+  ],
+  "other_events": [
+    {
+      "at": "2026-10-29T11:10:30+08:00",
+      "change": {
+        "kind": "material_changed_after_review",
+        "material_id": "M01",
+        "version": 2
+      },
+      "event": "external_change",
+      "material_id": "M01",
+      "mode": "mock",
+      "source": "synthetic_acceptance_fixture",
+      "step": 4,
+      "source_line": 4
+    }
+  ],
+  "warnings": []
+}

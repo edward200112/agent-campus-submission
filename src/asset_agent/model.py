@@ -118,6 +118,14 @@ class MockModel:
             if message["role"] == "tool":
                 obs = json.loads(message["content"])
                 name = call_names[message["tool_call_id"]]
+                if name == "read_material":
+                    for stale in ["check_rules", "query_slots", "save_draft"]:
+                        seen.pop(stale, None)
+                elif name == "check_rules":
+                    for stale in ["query_slots", "save_draft"]:
+                        seen.pop(stale, None)
+                elif name == "query_slots":
+                    seen.pop("save_draft", None)
                 seen[name] = obs
                 history.append((name, obs))
         action, args = self._next(context, seen, history)
@@ -151,6 +159,10 @@ class MockModel:
                 # The prior slot comes from observed queries, not a canned trace.
                 slot = MockModel._choose_slot(context, seen["query_slots"])
                 return action("save_draft", "上次写入已回滚，按同一请求有限重试", slot=slot)
+            if saved.get("code") in {"SLOT_CONFLICT", "UNOBSERVED_SLOT"}:
+                return action("query_slots", "保存时发现新冲突，重新查询后再选择时段", scope="day")
+            if saved.get("code") in {"STALE_REVIEW", "STALE_DRAFT"}:
+                return action("read_material", "工具指出资料或版本已过期，重新读取并审核", section="base")
             return action("finish", "工具明确保存失败，不能报告成功", outcome="failed")
         slots = seen.get("query_slots")
         if not slots:

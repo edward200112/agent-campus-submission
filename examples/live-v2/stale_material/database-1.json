@@ -1,0 +1,33 @@
+{
+  "draft_count": 1,
+  "drafts": [
+    {
+      "id": "D-e8c8a53eb95a",
+      "request_id": "demo-stale_material-001",
+      "material_id": "M01",
+      "revision": 1,
+      "state": "ready",
+      "updated_at": "2026-10-29T11:10:15+08:00",
+      "approved_alternative_at": null,
+      "channel": "wechat",
+      "confirmation_status": "not_required",
+      "requested_at": "2026-10-29T18:00:00+08:00",
+      "requirement_type": "hard",
+      "rules_version": "synthetic-rules-v1",
+      "scheduled_at": "2026-10-29T18:00:00+08:00",
+      "snapshot": "414f973566b3b73e4824aed5e5eb2e2c8bf66629f5fd9543fad84d10486afc6b",
+      "suggested_at": "2026-10-29T18:00:00+08:00",
+      "supplementary_loaded": false
+    }
+  ],
+  "draft_claim_count": 1,
+  "event_count": 1,
+  "slot_claims": [
+    {
+      "channel": "wechat",
+      "slot": "2026-10-29T18:00:00+08:00",
+      "source": "draft",
+      "owner": "D-e8c8a53eb95a"
+    }
+  ]
+}

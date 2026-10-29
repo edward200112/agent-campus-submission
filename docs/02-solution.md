@@ -44,6 +44,12 @@ SQLite 事务依据：[Python sqlite3](https://docs.python.org/3/library/sqlite3
 
 模型不可用或响应无效时不切换 Mock，运行记录保留 model_error。离线 Mock 仅用于流程验证。业务工具异常返回结构化错误，模型选择重试或失败结束。
 
+## 增强版运行反馈与阅读
+
+工具返回观察新增 runtime.state（审核/保存/确认事实摘要）与 runtime.budget（剩余全局决策、工具调用、单素材步数）。它们不包含预设下一步动作；模型根据观察选择重新查询、重读审核、重试或结束。
+
+run/demo 的 --verbose 通过 on_event 将实际动作写到 stderr。独立 trace 命令根据源 JSONL 生成 Markdown/JSON 阅读视图，显式 next_action 引用同一素材后续真实动作。原始记录不改写，视图包含源哈希，历史文案矛盾以警告呈现。细节与新增重新规划案例见 [增强说明](06-react-and-enhancements.md)。
+
 ## 取舍
 
 采用 Python 标准库和原生循环，运行/测试无第三方依赖，也无框架职责与版本需要额外解释。单 Agent 和 CLI 足以展示核心循环；业务工具本地实现便于可控故障注入与复现。代价是没有框架的持久会话、复杂调度和分布式能力，均非本题要求。

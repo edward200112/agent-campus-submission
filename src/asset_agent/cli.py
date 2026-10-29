@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sqlite3
+import sys
 from pathlib import Path
 
 from .agent import run_request
@@ -37,6 +38,7 @@ def parser():
     run.add_argument("--max-tool-calls", type=int, default=50)
     run.add_argument("--per-item-steps", type=int, default=12)
     run.add_argument("--simulate-save-failure", action="store_true", help="显式本地故障注入；不属于 Agent 工具")
+    run.add_argument("--verbose", action="store_true", help="将每步动作、简短依据和工具观察输出到 stderr")
     confirm = commands.add_parser("confirm", help="用户确认指定版本草稿的替代时段；仍不发布")
     confirm.add_argument("--db", type=Path, default=Path("runtime/agent.sqlite"))
     confirm.add_argument("--data-dir", type=Path, default=Path("data"))
@@ -55,6 +57,11 @@ def parser():
     demo.add_argument("--cases", default="all")
     demo.add_argument("--out", type=Path)
     demo.add_argument("--data-dir", type=Path, default=Path("data"))
+    demo.add_argument("--verbose", action="store_true")
+    trace = commands.add_parser("trace", help="从原始 JSONL 读取 ReAct 过程，不调用模型")
+    trace.add_argument("--input", type=Path, required=True)
+    trace.add_argument("--format", choices=["markdown", "json"], default="markdown")
+    trace.add_argument("--output", type=Path)
     return root
 
 
@@ -63,9 +70,22 @@ def main(argv=None):
     load_env(args.env_file)
     store = None
     try:
+        if args.command == "trace":
+            from .trace_view import read_view, render_markdown
+            view = read_view(args.input)
+            content = render_markdown(view) if args.format == "markdown" else json.dumps(view, ensure_ascii=False, indent=2) + "\n"
+            if args.output:
+                if args.output.resolve() == args.input.resolve():
+                    raise DomainError("TRACE_OVERWRITE", "视图不能覆盖原始 Trace")
+                args.output.parent.mkdir(parents=True, exist_ok=True)
+                args.output.write_text(content, encoding="utf-8")
+            print(content, end="")
+            return 0
+        from .trace_view import format_event
+        on_event = (lambda e: print(format_event(e), file=sys.stderr, flush=True)) if getattr(args, "verbose", False) else None
         if args.command == "demo":
             from .demo import run_demo
-            report = run_demo(args.mode, args.cases, args.out, args.data_dir)
+            report = run_demo(args.mode, args.cases, args.out, args.data_dir, on_event=on_event)
             print(json.dumps(report, ensure_ascii=False, indent=2))
             return 0 if report["passed"] else 1
         if args.command == "run":
@@ -76,7 +96,7 @@ def main(argv=None):
                                    max_steps=args.max_steps, max_tool_calls=args.max_tool_calls,
                                    per_item_steps=args.per_item_steps,
                                    save_failures=-1 if args.simulate_save_failure else 0,
-                                   trace_path=args.trace)
+                                   trace_path=args.trace, on_event=on_event)
         else:
             if not args.db.is_file():
                 raise DomainError("DB_NOT_FOUND", "数据库不存在，请先运行请求")
